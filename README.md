@@ -1,6 +1,6 @@
 # Ближайшие бары
 
-[FIXME. Здесь будет описание проекта]
+Обработка данных о барах Москвы в формате json
 
 # Как запустить
 
@@ -11,7 +11,11 @@
 ```bash
 
 $ python bars.py # possibly requires call of python3 executive instead of just python
-# FIXME вывести пример ответа скрипта
+The biggest bar: ('Спорт бар «Красная машина»', 450)
+The smallest bar: ('БАР. СОКИ', 0)
+Enter longitude: 55.1
+Enter latitude: 37.2
+The closest bar: ('Staropramen', 2154.26)
 
 ```
 
