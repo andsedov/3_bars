@@ -1,4 +1,5 @@
 import json
+from math import sin, cos, sqrt, atan2
 
 
 def load_data(filepath):
@@ -33,14 +34,11 @@ def get_smallest_bar(data):
     return seats_count_min_bar_name, seats_count_min
 
 
-from math import sin, cos, sqrt, atan2
-
-
 def get_distance(longitude_1, latitude_1, longitude_2, latitude_2):
     R = 6373.0
     dlon = longitude_2 - longitude_1
     dlat = latitude_2 - longitude_1
-    a = (sin(dlat / 2)) ** 2 + cos(latitude_1) * cos(latitude_2) * (sin(dlon / 2)) ** 2
+    a = (sin(dlat/2))**2+cos(latitude_1)*cos(latitude_2)*(sin(dlon/2))**2
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     distance = R * c
     return distance
