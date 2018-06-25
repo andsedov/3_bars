@@ -59,6 +59,6 @@ if __name__ == '__main__':
     try:
         closest_bar = get_closest_bar(bar_data, longitude, latitude)
         print('The closest bar:', closest_bar)
-    except Exception:
+    except ValueError:
         print('Coordinates are not valid')
     exit()
