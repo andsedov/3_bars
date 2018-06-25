@@ -1,5 +1,5 @@
 import json
-from math import sin, cos, sqrt, atan2
+from geopy.distance import great_circle
 
 
 def load_data(filepath):
@@ -7,59 +7,42 @@ def load_data(filepath):
         return json.load(file_object)
 
 
-def get_biggest_bar(data):
-    seats_count_max = 0
-    seats_count_max_bar_name = ''
+def get_dict_bar(data):
+    bar_dict = {}
     for bar in data['features']:
-        seats_count = bar['properties']['Attributes']['SeatsCount']
-        bar_name = bar['properties']['Attributes']['Name']
-        if seats_count > seats_count_max:
-            seats_count_max = seats_count
-            seats_count_max_bar_name = bar_name
-        else:
-            continue
-    return seats_count_max_bar_name, seats_count_max
+        bar_dict[bar['properties']['Attributes']['Name']] = bar['properties']['Attributes']['SeatsCount']
+    return bar_dict
+
+
+def get_biggest_bar(data):
+    bar_dict = get_dict_bar(data)
+    biggest_bar = max(bar_dict, key=bar_dict.get)
+    return biggest_bar
 
 
 def get_smallest_bar(data):
-    seats_count_min_bar_name, seats_count_min = get_biggest_bar(data)
-    for bar in data['features']:
-        seats_count = bar['properties']['Attributes']['SeatsCount']
-        bar_name = bar['properties']['Attributes']['Name']
-        if seats_count < seats_count_min:
-            seats_count_min = seats_count
-            seats_count_min_bar_name = bar_name
-        else:
-            continue
-    return seats_count_min_bar_name, seats_count_min
-
-
-def get_distance(longitude_1, latitude_1, longitude_2, latitude_2):
-    earth_radius = 6373.0
-    dlon = longitude_2 - longitude_1
-    dlat = latitude_2 - longitude_1
-    a = (sin(dlat/2))**2+cos(latitude_1)*cos(latitude_2)*(sin(dlon/2))**2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    distance = earth_radius * c
-    return distance
+    bar_dict = get_dict_bar(data)
+    smallest_bar = min(bar_dict, key=bar_dict.get)
+    return smallest_bar
 
 
 def get_closest_bar(data, longitude, latitude):
     longitude_init = data['features'][0]['geometry']['coordinates'][0]
     latitude_init = data['features'][0]['geometry']['coordinates'][1]
     closest_bar_name = ''
-    distance_min = get_distance(longitude, latitude, longitude_init, latitude_init)
+    distance_min = great_circle((latitude, longitude), (latitude_init, longitude_init)).meters
+
     for bar in data['features']:
         bar_name = bar['properties']['Attributes']['Name']
         bar_longitude = bar['geometry']['coordinates'][0]
         bar_latitude = bar['geometry']['coordinates'][1]
-        distance = get_distance(bar_longitude, bar_latitude, longitude_init, latitude_init)
+        distance = great_circle((bar_latitude, bar_longitude), (latitude, longitude)).meters
         if distance < distance_min:
             distance_min = distance
             closest_bar_name = bar_name
         else:
             continue
-    return closest_bar_name, round(distance_min, 2)
+    return closest_bar_name, round(distance_min / 1000, 2)
 
 
 if __name__ == '__main__':
@@ -70,5 +53,5 @@ if __name__ == '__main__':
     latitude = float(input('Enter latitude: '))
     try:
         print('The closest bar:', get_closest_bar(bar_data, longitude, latitude))
-    except:
+    except Exception:
         print('Coordinates are not valid')
