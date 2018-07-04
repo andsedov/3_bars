@@ -11,7 +11,7 @@
 
 ```bash
 
-$ python bars.py # possibly requires call of python3 executive instead of just python
+$ python bars.py <filepath> # possibly requires call of python3 executive instead of just python
 The biggest bar: Спорт бар «Красная машина» with 450 seats
 The smallest bar: БАР. СОКИ with 0 seats
 Enter longitude: 55.1
