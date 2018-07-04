@@ -1,6 +1,7 @@
 # Ближайшие бары
 
-Обработка данных о барах Москвы в формате json
+Скрипт ищет самый большой и самый маленький бар в Москве, а также выводит ближайший к пользователю бар при вводе gps координат.
+Список московских баров в формате JSON можно найти по ссылке http://data.mos.ru/opendata/7710881420-bary
 
 # Как запустить
 
@@ -11,11 +12,11 @@
 ```bash
 
 $ python bars.py # possibly requires call of python3 executive instead of just python
-The biggest bar: ('Спорт бар «Красная машина»', 450)
-The smallest bar: ('БАР. СОКИ', 0)
+The biggest bar: Спорт бар «Красная машина» with 450 seats
+The smallest bar: БАР. СОКИ with 0 seats
 Enter longitude: 55.1
 Enter latitude: 37.2
-The closest bar: ('Staropramen', 2154.26)
+The closest bar: ('Бар Виват', 2422.32) meters
 
 ```
 
